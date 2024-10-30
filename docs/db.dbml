@@ -1,0 +1,117 @@
+// Copy this text, paste to https://dbdiagram.io/d
+// Or, https://databasediagram.com/app
+// Or, view in VSCode with extension: "DBML Live Preview"
+
+Project DBML {
+  Note: '''
+CustomerFeedback: Collects feedback from customers about their experiences.
+SkiResort: Represents a ski resort with basic details and operational status.
+EquipmentRental: Represents rental records for ski equipment.
+Lift: Represents lifts within a ski resort.
+MaintenanceLog: Logs maintenance activities performed on lifts.
+PerformanceReview: Details performance reviews of ski instructors.
+SkiInstructor: Details about ski instructors employed at the resort.
+ResortFacility: Describes additional facilities available at the resort.
+SkiEvent: Lists events and competitions hosted by the resort.
+SkiLesson: Catalog of ski lessons provided by the resort.
+SkiTrail: Contains information on each ski trail, including difficulty level.
+Ticket: Manages lift tickets sold to customers.
+'''
+}
+
+Table CustomerFeedback {
+    id INTEGER [primary key]
+    resort_id INTEGER 
+    feedback VARCHAR 
+    customer_name VARCHAR 
+    }
+
+Table SkiResort {
+    id INTEGER [primary key]
+    name VARCHAR 
+    location VARCHAR 
+    operational BOOLEAN 
+    }
+
+Table EquipmentRental {
+    id INTEGER [primary key]
+    customer_name VARCHAR 
+    rental_date DATETIME 
+    return_date DATETIME 
+    }
+
+Table Lift {
+    id INTEGER [primary key]
+    name VARCHAR 
+    capacity INTEGER 
+    resort_id INTEGER 
+    }
+
+Table MaintenanceLog {
+    id INTEGER [primary key]
+    maintenance_date DATETIME 
+    lift_id INTEGER 
+    details VARCHAR 
+    }
+
+Table PerformanceReview {
+    id INTEGER [primary key]
+    review_date DATETIME 
+    instructor_id INTEGER 
+    comments VARCHAR 
+    }
+
+Table SkiInstructor {
+    id INTEGER [primary key]
+    name VARCHAR 
+    expertise_level VARCHAR 
+    hired_date DATETIME 
+    }
+
+Table ResortFacility {
+    id INTEGER [primary key]
+    facility_name VARCHAR 
+    resort_id INTEGER 
+    }
+
+Table SkiEvent {
+    id INTEGER [primary key]
+    event_name VARCHAR 
+    event_date DATETIME 
+    resort_id INTEGER 
+    }
+
+Table SkiLesson {
+    id INTEGER [primary key]
+    lesson_name VARCHAR 
+    instructor_id INTEGER 
+    difficulty VARCHAR 
+    }
+
+Table SkiTrail {
+    id INTEGER [primary key]
+    name VARCHAR 
+    difficulty VARCHAR 
+    resort_id INTEGER 
+    }
+
+Table Ticket {
+    id INTEGER [primary key]
+    ticket_type VARCHAR 
+    price FLOAT 
+    purchase_date DATETIME 
+    resort_id INTEGER 
+    }
+
+
+
+// Relationships
+    Ref: CustomerFeedback.(resort_id) < SkiResort.(id)
+    Ref: Lift.(resort_id) < SkiResort.(id)
+    Ref: MaintenanceLog.(lift_id) < Lift.(id)
+    Ref: PerformanceReview.(instructor_id) < SkiInstructor.(id)
+    Ref: ResortFacility.(resort_id) < SkiResort.(id)
+    Ref: SkiEvent.(resort_id) < SkiResort.(id)
+    Ref: SkiLesson.(instructor_id) < SkiInstructor.(id)
+    Ref: SkiTrail.(resort_id) < SkiResort.(id)
+    Ref: Ticket.(resort_id) < SkiResort.(id)

@@ -1,0 +1,333 @@
+about:
+  date: October 30, 2024 14:25:05
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 9
+  number_tables: 12
+info_toggle_checked: true
+resources:
+  CustomerFeedback:
+    attributes:
+    - label: ' customer_name*'
+      name: customer_name
+      search: true
+      sort: true
+    - name: resort_id
+      required: true
+    - name: feedback
+      required: true
+    - name: id
+    description: Collects feedback from customers about their experiences.
+    info_list: Collects feedback from customers about their experiences.
+    tab_groups:
+    - direction: toone
+      fks:
+      - resort_id
+      name: resort
+      resource: SkiResort
+    type: CustomerFeedback
+    user_key: customer_name
+  EquipmentRental:
+    attributes:
+    - label: ' customer_name*'
+      name: customer_name
+      required: true
+      search: true
+      sort: true
+    - name: rental_date
+      type: DATETIME
+    - name: return_date
+      type: DATETIME
+    - name: id
+    description: Represents rental records for ski equipment.
+    info_list: Represents rental records for ski equipment.
+    type: EquipmentRental
+    user_key: customer_name
+  Lift:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: resort_id
+      required: true
+    - name: capacity
+      required: true
+    - name: id
+    description: Represents lifts within a ski resort.
+    info_list: Represents lifts within a ski resort.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - lift_id
+      name: MaintenanceLogList
+      resource: MaintenanceLog
+    - direction: toone
+      fks:
+      - resort_id
+      name: resort
+      resource: SkiResort
+    type: Lift
+    user_key: name
+  MaintenanceLog:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: lift_id
+      required: true
+    - name: maintenance_date
+      required: true
+      type: DATETIME
+    - name: details
+      required: true
+    description: Logs maintenance activities performed on lifts.
+    info_list: Logs maintenance activities performed on lifts.
+    tab_groups:
+    - direction: toone
+      fks:
+      - lift_id
+      name: lift
+      resource: Lift
+    type: MaintenanceLog
+    user_key: id
+  PerformanceReview:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: instructor_id
+      required: true
+    - name: review_date
+      type: DATETIME
+    - name: comments
+    description: Details performance reviews of ski instructors.
+    info_list: Details performance reviews of ski instructors.
+    tab_groups:
+    - direction: toone
+      fks:
+      - instructor_id
+      name: instructor
+      resource: SkiInstructor
+    type: PerformanceReview
+    user_key: id
+  ResortFacility:
+    attributes:
+    - label: ' facility_name*'
+      name: facility_name
+      required: true
+      search: true
+      sort: true
+    - name: resort_id
+      required: true
+    - name: id
+    description: Describes additional facilities available at the resort.
+    info_list: Describes additional facilities available at the resort.
+    tab_groups:
+    - direction: toone
+      fks:
+      - resort_id
+      name: resort
+      resource: SkiResort
+    type: ResortFacility
+    user_key: facility_name
+  SkiEvent:
+    attributes:
+    - label: ' event_name*'
+      name: event_name
+      required: true
+      search: true
+      sort: true
+    - name: resort_id
+      required: true
+    - name: event_date
+      required: true
+      type: DATETIME
+    - name: id
+    description: Lists events and competitions hosted by the resort.
+    info_list: Lists events and competitions hosted by the resort.
+    tab_groups:
+    - direction: toone
+      fks:
+      - resort_id
+      name: resort
+      resource: SkiResort
+    type: SkiEvent
+    user_key: event_name
+  SkiInstructor:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: expertise_level
+      required: true
+    - name: hired_date
+      type: DATETIME
+    - name: id
+    description: Details about ski instructors employed at the resort.
+    info_list: Details about ski instructors employed at the resort.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - instructor_id
+      name: PerformanceReviewList
+      resource: PerformanceReview
+    - direction: tomany
+      fks:
+      - instructor_id
+      name: SkiLessonList
+      resource: SkiLesson
+    type: SkiInstructor
+    user_key: name
+  SkiLesson:
+    attributes:
+    - label: ' lesson_name*'
+      name: lesson_name
+      required: true
+      search: true
+      sort: true
+    - name: instructor_id
+      required: true
+    - name: difficulty
+    - name: id
+    description: Catalog of ski lessons provided by the resort.
+    info_list: Catalog of ski lessons provided by the resort.
+    tab_groups:
+    - direction: toone
+      fks:
+      - instructor_id
+      name: instructor
+      resource: SkiInstructor
+    type: SkiLesson
+    user_key: lesson_name
+  SkiResort:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: location
+      required: true
+    - name: operational
+    - name: id
+    description: Represents a ski resort with basic details and operational status.
+    info_list: Represents a ski resort with basic details and operational status.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - resort_id
+      name: CustomerFeedbackList
+      resource: CustomerFeedback
+    - direction: tomany
+      fks:
+      - resort_id
+      name: LiftList
+      resource: Lift
+    - direction: tomany
+      fks:
+      - resort_id
+      name: ResortFacilityList
+      resource: ResortFacility
+    - direction: tomany
+      fks:
+      - resort_id
+      name: SkiEventList
+      resource: SkiEvent
+    - direction: tomany
+      fks:
+      - resort_id
+      name: SkiTrailList
+      resource: SkiTrail
+    - direction: tomany
+      fks:
+      - resort_id
+      name: TicketList
+      resource: Ticket
+    type: SkiResort
+    user_key: name
+  SkiTrail:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: resort_id
+      required: true
+    - name: difficulty
+      required: true
+    - name: id
+    description: Contains information on each ski trail, including difficulty level.
+    info_list: Contains information on each ski trail, including difficulty level.
+    tab_groups:
+    - direction: toone
+      fks:
+      - resort_id
+      name: resort
+      resource: SkiResort
+    type: SkiTrail
+    user_key: name
+  Ticket:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: resort_id
+      required: true
+    - name: ticket_type
+      required: true
+    - name: price
+      required: true
+    - name: purchase_date
+      type: DATETIME
+    description: Manages lift tickets sold to customers.
+    info_list: Manages lift tickets sold to customers.
+    tab_groups:
+    - direction: toone
+      fks:
+      - resort_id
+      name: resort
+      resource: SkiResort
+    type: Ticket
+    user_key: id
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'
